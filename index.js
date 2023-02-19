@@ -43,7 +43,14 @@ const getWordFromAPI = async function () {
   }
 };
 const randomWord = await getWordFromAPI();
-theWordEl.textContent = randomWord.replace(/[a-z]/g, '_');
+const wordArray = Array.from(randomWord);
+console.log(wordArray);
+wordArray.forEach(() => {
+  wordArray.join(' ');
+  const span = document.createElement('span');
+  theWordEl.appendChild(span);
+  span.innerHTML = '_';
+});
 
 const strike = function () {
   document.getElementById('score').textContent = score -= 2;
@@ -52,12 +59,11 @@ const strike = function () {
 const tryAlphabet = (event) => {
   const input = event.target.textContent.toLowerCase();
   const inputIsIncluded = randomWord.includes(input);
-  console.log(randomWord, input);
 
   if (inputIsIncluded) {
-    console.log('LETTERA INCLUSA');
-
-    // theWordEl.textContent = randomWord.replace(input, '_');
+    for (let i = 0; i < wordArray.length; i++) {
+      if (input === wordArray[i]) theWordEl.childNodes[i].innerHTML = input;
+    }
   } else strike();
 };
 
