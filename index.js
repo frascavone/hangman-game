@@ -1,4 +1,3 @@
-'use scrict';
 // Hangman Game
 
 // Hangman is a simple game that revolves around guessing
@@ -18,14 +17,22 @@
 // - la tastiera può avere un diverso layout (qwerty, abcde, ecc)
 // - usa servizi API come swapi.dev per recuperare le parole da indovinare
 
-const theWordEl = document.querySelector('#the-word');
-const message = document.querySelector('.message');
+//////////////////////////////////////////////////////////
+'use scrict';
+
+// importing Hangman canvas
+import * as canvas from './canvas.js';
+
+const theWordEl = document.querySelector('.the-word');
 const keyboardKeysArray = document.querySelectorAll('.btn');
+const layoutChanger = document.querySelector('.change-layout');
+const message = document.querySelector('.message');
+const tryAgain = document.querySelector('.try-again');
+let score = 6;
 
 message.textContent = 'Recupero parola casuale...';
 
-let score = 10;
-
+// HTTP request to swapi.dev
 const getWordFromAPI = async function () {
   const response = await fetch('https://swapi.dev/api/planets');
   try {
@@ -43,30 +50,86 @@ const getWordFromAPI = async function () {
   }
 };
 const randomWord = await getWordFromAPI();
-const wordArray = Array.from(randomWord);
-console.log(wordArray);
-wordArray.forEach(() => {
-  wordArray.join(' ');
-  const span = document.createElement('span');
-  theWordEl.appendChild(span);
-  span.innerHTML = '_';
-});
 
-const strike = function () {
-  document.getElementById('score').textContent = score -= 2;
-};
-
+// Game Logic
 const tryAlphabet = (event) => {
   const input = event.target.textContent.toLowerCase();
   const inputIsIncluded = randomWord.includes(input);
-
-  if (inputIsIncluded) {
-    for (let i = 0; i < wordArray.length; i++) {
-      if (input === wordArray[i]) theWordEl.childNodes[i].innerHTML = input;
-    }
-  } else strike();
+  if (!playerArray.includes(input)) {
+    if (inputIsIncluded) {
+      for (let i = 0; i < randomWordArray.length; i++) {
+        if (input === randomWordArray[i]) {
+          theWordEl.childNodes[i].innerHTML = input;
+          playerArray.push(input);
+          console.log(randomWordArray, playerArray);
+          if (areArraysEquals()) {
+            document.querySelector('body').style.backgroundColor = 'green';
+            message.textContent = 'HAI VINTO!!! 🥳🥳🥳';
+            keyboardKeysArray.forEach((key) => {
+              key.removeEventListener('click', tryAlphabet);
+            });
+            tryAgain.classList.remove('hidden');
+          }
+        }
+      }
+    } else strike();
+  }
 };
 
+// Strike logic
+const strike = function () {
+  score--;
+  if (score === 5) canvas.drawHead();
+  if (score === 4) canvas.drawTorso();
+  if (score === 3) canvas.drawLeftArm();
+  if (score === 2) canvas.drawRightArm();
+  if (score === 1) canvas.drawLeftLeg();
+  if (score === 0) {
+    canvas.drawRightLeg();
+    document.querySelector('body').style.backgroundColor = 'red';
+    message.style.color = 'white';
+    message.textContent = `HAI PERSO!!! la parola segreta era: ${randomWord.toUpperCase()} 😔😔😔`;
+    keyboardKeysArray.forEach((key) => {
+      key.removeEventListener('click', tryAlphabet);
+    });
+    tryAgain.classList.remove('hidden');
+  }
+};
+
+const randomWordArray = Array.from(randomWord);
+const playerArray = [];
+
+// Compare arrays
+const areArraysEquals = function () {
+  return (
+    playerArray.length === randomWordArray.length &&
+    playerArray.every((el) => randomWordArray.includes(el))
+  );
+};
+
+// Adding a dash in "theWord" element for every alphabet of randomWord
+randomWordArray.forEach((el) => {
+  const span = document.createElement('span');
+  if (el !== ' ' && el !== "'") {
+    theWordEl.appendChild(span);
+    span.innerHTML = '_';
+  } else {
+    theWordEl.appendChild(span);
+    span.style.marginLeft = '2rem';
+    playerArray.push(' ');
+  }
+});
+
+// Event listener for keyboard buttons
 keyboardKeysArray.forEach((key) => {
   key.addEventListener('click', tryAlphabet);
+});
+
+layoutChanger.addEventListener('click', () => {
+  document.querySelector('.keyboard.abcde').classList.toggle('hidden');
+  document.querySelector('.keyboard.qwerty').classList.toggle('hidden');
+});
+
+tryAgain.addEventListener('click', () => {
+  window.location.reload();
 });

@@ -4,85 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Hangman Game</title>
   </head>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-    }
-    html {
-      font-size: 62.5%;
-      font-family: sans-serif;
-    }
-    body {
-      background-color: black;
-      text-align: center;
-      color: #ccc;
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .container {
-      width: 60rem;
-      margin-top: 2rem;
-      font-size: 2rem;
-    }
-    #the-word {
-      width: 65%;
-      margin: 0 auto;
-      border: 2px solid white;
-      border-radius: 5px;
-      background-color: orangered;
-      padding: 1rem;
-      font-size: 4rem;
-      letter-spacing: 5px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .message {
-      padding: 1rem;
-      margin: 0.5rem;
-      color: orangered;
-    }
-    .keyboard {
-      border: 2px solid white;
-      border-radius: 5px;
-      padding: 1rem;
-      margin-top: 0.5rem;
-    }
-    .btn {
-      border: 1px solid white;
-      background-color: transparent;
-      color: white;
-      width: 3.5rem;
-      padding: 1rem;
-      margin: 0.8rem;
-      text-transform: uppercase;
-      font-size: 1.5rem;
-      font-weight: 600;
-      border-radius: 5px;
-    }
-    .btn:hover,
-    .btn:active {
-      transform: translateY(-5px);
-      transition: all 0.2s;
-      background-color: azure;
-      color: black;
-    }
-  </style>
   <body>
     <h1>-- Hangman Game --</h1>
     <div class="container">
-      <div id="the-word"></div>
+      <canvas width="300px" height="300px" class="hangman card"></canvas>
+      <div class="the-word card"></div>
       <p class="message"></p>
-      <div>
-        <h4>Punteggio: <span id="score">10</span></h4>
-        <h6>(-2 punti per ogni lettera sbagliata)</h6>
-      </div>
-      <div class="keyboard">
+      <button class="try-again hidden">Gioca ancora</button>
+      <div class="keyboard qwerty card">
         <button class="btn">q</button>
         <button class="btn">w</button>
         <button class="btn">e</button>
@@ -110,6 +42,35 @@
         <button class="btn">n</button>
         <button class="btn">m</button>
       </div>
+      <div class="keyboard abcde card hidden">
+        <button class="btn">a</button>
+        <button class="btn">b</button>
+        <button class="btn">c</button>
+        <button class="btn">d</button>
+        <button class="btn">e</button>
+        <button class="btn">f</button>
+        <button class="btn">g</button>
+        <button class="btn">h</button>
+        <button class="btn">i</button>
+        <button class="btn">l</button>
+        <button class="btn">j</button>
+        <button class="btn">k</button>
+        <button class="btn">m</button>
+        <button class="btn">n</button>
+        <button class="btn">o</button>
+        <button class="btn">p</button>
+        <button class="btn">q</button>
+        <button class="btn">r</button>
+        <button class="btn">s</button>
+        <button class="btn">t</button>
+        <button class="btn">u</button>
+        <button class="btn">v</button>
+        <button class="btn">w</button>
+        <button class="btn">x</button>
+        <button class="btn">y</button>
+        <button class="btn">z</button>
+      </div>
+      <button class="change-layout">Cambia layout tastiera</button>
     </div>
   </body>
   <script type="module" src="index.js"></script>
