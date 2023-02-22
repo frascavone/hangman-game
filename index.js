@@ -69,7 +69,7 @@ const tryAlphabet = (event) => {
           playerArray.push(input);
           if (arraysAreEquals()) {
             showModal(
-              `HAI VINTO!!! 🥳🥳🥳 <br> la parola era:<br>${randomWord.toUpperCase()}`,
+              `HAI VINTO!!! 🥳🥳🥳 <br> la parola era:<p style="color:brown">${randomWord.toUpperCase()}</p>`,
               'green'
             );
           }
@@ -107,7 +107,7 @@ const strike = function () {
   }
   if (score === 0) {
     showModal(
-      `HAI PERSO!!! 😔😔😔 <br> la parola segreta era: <br> ${randomWord.toUpperCase()} <br>`,
+      `HAI PERSO!!! 😔😔😔 <br> la parola segreta era: <p style="color:brown">${randomWord.toUpperCase()}</p>`,
       'red'
     );
   }
