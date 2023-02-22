@@ -15,6 +15,14 @@ let score = 6;
 
 message.textContent = 'Recupero parola casuale...';
 
+export const showMessage = function (text) {
+  message.style.visibility = 'visible';
+  message.textContent = text;
+  setTimeout(() => {
+    message.style.visibility = 'hidden';
+  }, 1500);
+};
+
 // HTTP request to swapi.dev
 const randomWord = await getWordFromAPI();
 
@@ -75,14 +83,6 @@ const shakeTheWordEl = function () {
   theWordEl.classList.remove('wrong');
   theWordEl.offsetWidth;
   theWordEl.classList.add('wrong');
-};
-
-export const showMessage = function (text) {
-  message.style.visibility = 'visible';
-  message.textContent = text;
-  setTimeout(() => {
-    message.style.visibility = 'hidden';
-  }, 1500);
 };
 
 const showModal = function (text, color) {
