@@ -6,7 +6,7 @@ import { getWordFromAPI } from './http.js';
 const theWordEl = document.querySelector('.the-word');
 const keyboardKeysArray = document.querySelectorAll('.btn');
 const layoutChanger = document.querySelector('.change-layout');
-const message = document.querySelector('.message');
+export const message = document.querySelector('.message');
 const modal = document.querySelector('.modal');
 const modalMessage = document.querySelector('.modal-message');
 const tryAgain = document.querySelector('.try-again');
