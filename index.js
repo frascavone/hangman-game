@@ -29,6 +29,9 @@ const randomWord = await getWordFromAPI();
 // Creating an array from randomWord string
 const randomWordArray = Array.from(randomWord);
 
+// Creating an empty array to fill with player correct alphabets
+const playerArray = [];
+
 // Adding a dash in "theWord" element for every alphabet of randomWord
 randomWordArray.forEach((el) => {
   const span = document.createElement('span');
@@ -41,9 +44,6 @@ randomWordArray.forEach((el) => {
     playerArray.push(' ');
   }
 });
-
-// Creating an empty array to fill with player correct alphabets
-const playerArray = [];
 
 // Comparing arrays
 const arraysAreEquals = function () {
