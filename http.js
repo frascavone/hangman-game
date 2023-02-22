@@ -9,6 +9,7 @@ export const getWordFromAPI = async function () {
       const data = await response.json();
       const randomWord =
         data.results[Math.floor(Math.random() * data.results.length)].name;
+      showMessage('Indovina la parola...una lettera alla volta');
       return randomWord.toLowerCase();
     } else {
       throw new Error(`Ops, qualcosa è andato storto`);
