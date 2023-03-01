@@ -1,5 +1,6 @@
 'use scrict';
 
+// import _ from 'lodash';
 import * as canvas from './canvas.js';
 import { getWordFromAPI } from './http.js';
 
