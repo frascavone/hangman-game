@@ -1,117 +1,71 @@
 'use scrict';
 
-// import _ from 'lodash';
-import * as canvas from './canvas.js';
-import { getWordFromAPI } from './http.js';
+import { getWordFromAPI } from './http';
+import * as view from './view';
+import * as canvas from './canvas';
+import { areEquals } from './helpers';
 
-const theWordEl = document.querySelector('.the-word');
 const keyboardKeysArray = document.querySelectorAll('.btn');
 const layoutChanger = document.querySelector('.change-layout');
-export const message = document.querySelector('.message');
-const modal = document.querySelector('.modal');
-const modalMessage = document.querySelector('.modal-message');
-const tryAgain = document.querySelector('.try-again');
 
+// Setting starting score
 let score = 6;
 
-message.textContent = 'Recupero parola casuale...';
-
-export const showMessage = function (text) {
-  message.style.visibility = 'visible';
-  message.textContent = text;
-  setTimeout(() => {
-    message.style.visibility = 'hidden';
-  }, 1500);
-};
-
-// HTTP request to swapi.dev
-const randomWord = await getWordFromAPI();
-
-// Creating an array from randomWord string
-const randomWordArray = Array.from(randomWord);
+view.setMessage('Recupero parola casuale...');
 
 // Creating an empty array to fill with player correct alphabets
-const playerArray = [];
+export const playerArray = [];
 
-// Adding a dash in "theWord" element for every alphabet of randomWord
-randomWordArray.forEach((el) => {
-  const span = document.createElement('span');
-  if (el !== ' ' && el !== "'") {
-    theWordEl.appendChild(span);
-    span.innerHTML = '_';
-  } else {
-    theWordEl.appendChild(span);
-    span.style.marginRight = '2rem';
-    playerArray.push(' ');
-  }
-});
+const randomWord = await getWordFromAPI();
 
-// Comparing arrays
-const arraysAreEquals = function () {
-  return (
-    playerArray.length === randomWordArray.length &&
-    playerArray.every((el) => randomWordArray.includes(el))
-  );
-};
+// Adding a dash in "theWord" element for every alphabet in randomWord
+view.renderADashPerAlphabet(randomWord);
 
-// Game Logic  ///////////////////////////////////
-const tryAlphabet = (event) => {
-  const input = event.target.textContent.toLowerCase();
-  const inputIsIncluded = randomWord.includes(input);
-
-  // avoid double insertion
-  if (!playerArray.includes(input)) {
-    if (inputIsIncluded) {
-      // loop the randomWordArray and check for input match
-      for (let i = 0; i < randomWordArray.length; i++) {
-        if (input === randomWordArray[i]) {
-          // insert input into theWordEl and playerArray
-          theWordEl.childNodes[i].innerHTML = input;
-          playerArray.push(input);
-          if (arraysAreEquals()) {
-            showModal(
-              `HAI VINTO!!! 🥳🥳🥳 <br> la parola era:<p style="color:brown">${randomWord.toUpperCase()}</p>`,
-              'green'
-            );
-          }
-        }
-      }
-    } else strike();
-  } else showMessage('LETTERA GIÀ INSERITA');
-};
-
-const shakeTheWordEl = function () {
-  theWordEl.classList.remove('wrong');
-  theWordEl.offsetWidth;
-  theWordEl.classList.add('wrong');
-};
-
-const showModal = function (text, color) {
-  modal.style.backgroundColor = color;
-  modal.style.display = 'block';
-  modalMessage.innerHTML = text;
-  tryAgain.classList.remove('hidden');
-};
+view.setMessage('Indovina la parola...una lettera alla volta');
 
 // Strike logic /////////////////////////////////
 const strike = function () {
   score--;
-  shakeTheWordEl();
-  showMessage('LETTERA ERRATA');
+  view.shakeTheWordEl();
+  view.showMessage('LETTERA ERRATA');
   if (score === 5) canvas.drawHead();
   if (score === 4) canvas.drawTorso();
   if (score === 3) canvas.drawLeftArm();
   if (score === 2) canvas.drawRightArm();
   if (score === 1) {
-    showMessage('ATTENZIONE! UN ALTRO ERRORE ED AVRAI PERSO');
+    view.setMessage('ATTENZIONE! UN ALTRO ERRORE ED AVRAI PERSO');
     canvas.drawLeftLeg();
   }
   if (score === 0) {
-    showModal(
+    view.showModal(
       `HAI PERSO!!! 😔😔😔 <br> la parola segreta era: <p style="color:brown">${randomWord.toUpperCase()}</p>`,
       'red'
     );
   }
+};
+
+// Game Logic  ///////////////////////////////////
+export const tryAlphabet = (event) => {
+  const input = event.target.textContent.toLowerCase();
+  if (randomWord.includes(input)) {
+    // avoid double insertion
+    if (!playerArray.includes(input)) {
+      [...randomWord].forEach((alphabet, index) => {
+        if (alphabet === input) {
+          // insert input into theWordEl and playerArray
+          view.theWordEl.childNodes[index].innerHTML = input;
+          playerArray.push(input);
+          // check for playerArray and randomWord equality
+          if (areEquals(playerArray, randomWord)) {
+            view.showModal(
+              `HAI VINTO!!! 🥳🥳🥳 <br> la parola era:<p style="color:brown">${randomWord.toUpperCase()}</p>`,
+              'green'
+            );
+          }
+        }
+      });
+    } else view.showMessage('LETTERA GIÀ INSERITA');
+  } else strike();
 };
 
 // Event listeners //////////////////////////
@@ -124,6 +78,8 @@ layoutChanger.addEventListener('click', () => {
   document.querySelector('.keyboard.qwerty').classList.toggle('hidden');
 });
 
-tryAgain.addEventListener('click', () => {
+view.tryAgain.addEventListener('click', () => {
   window.location.reload();
 });
+
+export default { playerArray, tryAlphabet };

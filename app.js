@@ -1,4 +1,4 @@
 // CSS
-require('./src/style.css');
+import './src/style.css';
 // JS
-require('./src/js/index.js');
+import './src/js/index.js';
