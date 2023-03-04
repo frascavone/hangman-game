@@ -13,10 +13,10 @@ let score = 6;
 
 view.setMessage('Recupero parola casuale...');
 
+const randomWord = await getWordFromAPI();
+
 // Creating an empty array to fill with player correct alphabets
 export const playerArray = [];
-
-const randomWord = await getWordFromAPI();
 
 // Adding a dash in "theWord" element for every alphabet in randomWord
 view.renderADashPerAlphabet(randomWord);
@@ -28,19 +28,30 @@ const strike = function () {
   score--;
   view.shakeTheWordEl();
   view.showMessage('LETTERA ERRATA');
-  if (score === 5) canvas.drawHead();
-  if (score === 4) canvas.drawTorso();
-  if (score === 3) canvas.drawLeftArm();
-  if (score === 2) canvas.drawRightArm();
-  if (score === 1) {
-    view.setMessage('ATTENZIONE! UN ALTRO ERRORE ED AVRAI PERSO');
-    canvas.drawLeftLeg();
-  }
-  if (score === 0) {
-    view.showModal(
-      `HAI PERSO!!! 😔😔😔 <br> la parola segreta era: <p style="color:brown">${randomWord.toUpperCase()}</p>`,
-      'red'
-    );
+  switch (score) {
+    case 5:
+      canvas.drawHead();
+      break;
+    case 4:
+      canvas.drawTorso();
+      break;
+    case 3:
+      canvas.drawLeftArm();
+      break;
+    case 2:
+      canvas.drawRightArm();
+      break;
+    case 1: {
+      canvas.drawLeftLeg();
+      view.setMessage('ATTENZIONE! UN ALTRO ERRORE ED AVRAI PERSO');
+      break;
+    }
+    case 0: {
+      view.showModal(
+        `HAI PERSO!!! 😔😔😔 <br> la parola segreta era: <p style="color:brown">${randomWord.toUpperCase()}</p>`,
+        'red'
+      );
+    }
   }
 };
 
@@ -52,10 +63,8 @@ export const tryAlphabet = (event) => {
     if (!playerArray.includes(input)) {
       [...randomWord].forEach((alphabet, index) => {
         if (alphabet === input) {
-          // insert input into theWordEl and playerArray
           view.theWordEl.childNodes[index].innerHTML = input;
           playerArray.push(input);
-          // check for playerArray and randomWord equality
           if (areEquals(playerArray, randomWord)) {
             view.showModal(
               `HAI VINTO!!! 🥳🥳🥳 <br> la parola era:<p style="color:brown">${randomWord.toUpperCase()}</p>`,
