@@ -61,11 +61,12 @@ export const tryAlphabet = (event) => {
   if (randomWord.includes(input)) {
     // avoid double insertion
     if (!playerArray.includes(input)) {
-      [...randomWord].forEach((alphabet, index) => {
+      const randomWordArray = Array.from(randomWord);
+      randomWordArray.forEach((alphabet, index) => {
         if (alphabet === input) {
           view.theWordEl.childNodes[index].innerHTML = input;
           playerArray.push(input);
-          if (areEquals(playerArray, randomWord)) {
+          if (areEquals(playerArray, randomWordArray)) {
             view.showModal(
               `HAI VINTO!!! 🥳🥳🥳 <br> la parola era:<p style="color:brown">${randomWord.toUpperCase()}</p>`,
               'green'
