@@ -1,11 +1,7 @@
-# Hangman Game
+# Vue 3 + Vite
 
-Hangman is a simple game that revolves around guessing
-a randomly chosen word.
-The player gets to choose an alphabet every round.
-if the alphabet does not exist in the chosen word,
-the player will receive one strike.
-After receiving a certain number of strikes,
-the player loses the game.
-The player will win the game if he/she/it
-correctly guesses all the alphabets.
+This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+
+## Recommended IDE Setup
+
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
