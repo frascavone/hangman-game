@@ -4,12 +4,10 @@ import { showMessage } from './view';
 
 export const getWordFromAPI = async function () {
   try {
-    const response = await fetch('https://swapi.dev/api/planets');
+    const response = await fetch('https://random-word-api.herokuapp.com/word?lang=it');
     if (response.ok) {
       const data = await response.json();
-      const randomWord =
-        data.results[Math.floor(Math.random() * data.results.length)].name;
-      return randomWord.toLowerCase();
+      return data.results[0];
     } else {
       throw new Error(`Ops, qualcosa è andato storto`);
     }
