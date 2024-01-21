@@ -1,4 +1,4 @@
 // CSS
-import './src/style.css';
+import "./src/style.css";
 // JS
-import './src/js/index.js';
+import "./src/js/index.js";
